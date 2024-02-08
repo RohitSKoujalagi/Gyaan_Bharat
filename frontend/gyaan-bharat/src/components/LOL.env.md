@@ -1,0 +1,14 @@
+MyGirl
+https://elevenlabs.io/app/voice-lab/share/dd350ae2893eecd0d55cc0f5cd4a6b5b9ad03b530d719b1959b43e448e1cb3d6/g08ev8eZwAD7ohnGcElv
+9EKzyT6CPsxyiagOwddD
+
+Amrith
+https://elevenlabs.io/app/voice-lab/share/52d62b49a52789b96cf01345568dfaf04610eed250f562d9092848951f72a7f0/1qZOLVpd1TVic43MSkFY
+
+1qZOLVpd1TVic43MSkFY
+
+
+
+Priya
+https://elevenlabs.io/app/voice-lab/share/899444b1d9eab0cea6d20686befafde9ccdc46ab4628e79973cf318a9497b138/B4djpkEf3uWPeszz6CU9
+g08ev8eZwAD7ohnGcElv

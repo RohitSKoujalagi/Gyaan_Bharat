@@ -1,0 +1,136 @@
+.Main {
+  background: linear-gradient(210deg,#52dd72,#23d9e0,#5ac573);
+  background-size: 200% 200%;
+  background-position: 100% 0%;
+
+  margin: auto;
+  border-radius: 5%;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0px 0px 5px;
+  border-left: 0.1px solid white;
+  border-bottom: 0.1px solid white;
+  animation: Grad 4s linear infinite alternate-reverse ;
+}
+
+
+
+@keyframes Grad {
+  0% {
+    background-position: 0% 100%;
+  }
+
+  100% {
+    background-position: 100% 0%;
+  }
+}
+
+
+
+*{
+  padding: 10px;
+  margin: auto;
+}
+
+.mic-button {
+  background-color: cyan;
+  border: none;
+  box-shadow: 1px 2px 1px  ;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  /* padding: 20px; */
+
+  width: 80vw;
+}
+
+.mic-button.recording {
+  background-color: red;
+
+}
+
+.mic-btn{
+  box-shadow: 2px 2px 2px ;
+}
+
+.material-symbols-outlined{
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px ;
+  height: 60px;
+  width: 60px;
+  text-align:center;
+  line-height: 60px;
+  font-size: xx-large;
+  background-color: antiquewhite;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  border: none;
+
+}
+
+
+.btn-clkd{
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  text-align:center;
+  line-height: 60px;
+  font-size: xx-large;
+  background-color: red;
+  color: white;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  border: none;
+}
+
+.rec-btn{
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  text-align:center;
+  line-height: 60px;
+  font-size: xx-large;
+  background-color: antiquewhite;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  border: none;
+
+}
+
+.wffwct-shadow {
+ 
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px 4px red;
+  animation: wave 2s ease-in-out infinite;
+  /* stroke: 2px; */
+  border: 1px solid white;
+}
+
+@keyframes wave {
+  0% {
+    box-shadow: 0px 0px 15px 6px rgba(0, 0, 0, 0.603);
+  }
+  50% {
+    box-shadow: 0px 0px 20px 8px rgba(0, 0, 0, 0.552);
+  }
+  100% {
+    box-shadow: 0px 0px 30px 10px rgba(0, 0, 0, 0.516);
+  }
+}
+
+.reset-btn{
+  box-shadow: 0px 0px 3px;
+  border: none;
+  font-weight: 400;
+}
+
+

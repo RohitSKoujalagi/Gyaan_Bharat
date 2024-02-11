@@ -5,5 +5,3 @@ openai
 requests
 fastapi
 fastapi.responses
-json
-os

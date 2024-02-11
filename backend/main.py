@@ -10,7 +10,7 @@ import requests
 app = FastAPI()
 
 load_dotenv()
-openai.api_key=os.getenv("OPENAI_API_KEY")
+open_api_key=os.getenv("OPENAI_API_KEY")
 elevenlabs_key=os.getenv("ELEVENLABS_KEY")
 
 
@@ -96,7 +96,7 @@ def req_transcribe(file):
         files={"file":file}
 
         headers = {
-             'Authorization': f"Bearer {os.getenv("OPENAI_API_KEY")}"
+             'Authorization': f"Bearer {open_api_key}"
                     }
 
         response = requests.request("POST", url, headers=headers, data=payload,files=files)
@@ -132,7 +132,7 @@ def chat_completion(user_msg):
 
     headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}"
+            "Authorization": f"Bearer {open_api_key}"
         }
 
     data = {

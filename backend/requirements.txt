@@ -5,6 +5,5 @@ openai
 requests
 fastapi
 fastapi.responses
-fastapi.middleware.cors
 json
 os

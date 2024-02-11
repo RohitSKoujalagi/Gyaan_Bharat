@@ -5,3 +5,4 @@ openai
 requests
 fastapi
 fastapi.responses
+python-multipart

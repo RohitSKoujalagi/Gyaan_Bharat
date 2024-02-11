@@ -6,9 +6,7 @@ from dotenv import load_dotenv
 import openai
 import os
 import requests
-# from elevenlabs import generate,stream
 
-# openai.organization=os.getenv("OPENAI_ORG")
 app = FastAPI()
 
 load_dotenv()
@@ -51,14 +49,14 @@ async def root(file: UploadFile=File(...)):
          buffer.write(file.file.read())
         audio_input = open(file.filename, "rb")
 
-        user_msg=transcribe_audio(audio_input)
+        user_msg=req_transcribe(audio_input)
         print("USER_MSG \n",user_msg)
 
     except Exception as e:
         print(e)
 
     try:
-            chat_response=get_chat_response(user_msg)
+            chat_response=chat_completion(user_msg)
             print("CHAT_RESPONSE\n",chat_response)
 
     
@@ -75,36 +73,90 @@ async def root(file: UploadFile=File(...)):
 
 
 #Transcribes audio to text using OpenAI Whisper API.
-def transcribe_audio(file):
-    try:
-      transcript = openai.audio.transcriptions.create(model="whisper-1", 
-          file=file)
-      return transcript.text
+# def transcribe_audio(file):
+#     try:
+#       transcript = openai.audio.transcriptions.create(model="whisper-1", 
+#           file=file)
+#       return transcript.text
     
-    except Exception as e:
-        print(f"Could Not Transcribe Audio to Text \n Error: {e}")
+#     except Exception as e:
+#         print(f"Could Not Transcribe Audio to Text \n Error: {e}")
 
+
+def req_transcribe(file):
+    try:
+
+        url = "https://api.openai.com/v1/audio/transcriptions"
+
+        payload = {
+            "model": "whisper-1",
+            "response_format":"text"
+            }
+        
+        files={"file":file}
+
+        headers = {
+             'Authorization': f"Bearer {os.getenv("OPENAI_API_KEY")}"
+                    }
+
+        response = requests.request("POST", url, headers=headers, data=payload,files=files)
+
+        print("res=\n",response.text)
+        return response.text
+
+
+    except Exception as e:
+        print("Error \n",e)
 
 
 #Queries the GPT-3.5-turbo model for a response to the user's message.
-def get_chat_response(user_msg):
+# def get_chat_response(user_msg):
+#     messages=load_messages()
+#     messages.append({"role":"user","content":user_msg})
+
+#     gpt_response=openai.chat.completions.create(
+#      model="gpt-3.5-turbo",
+#      messages=messages
+#             )
+#     print("GPT RESPONSE = ",gpt_response.choices[0].message.content,"\n")
+#     save_messages(user_msg,gpt_response)
+#     return gpt_response.choices[0].message.content
+
+
+
+def chat_completion(user_msg):
     messages=load_messages()
     messages.append({"role":"user","content":user_msg})
-    print("Hurray!!!")
 
-    gpt_response=openai.chat.completions.create(
-     model="gpt-3.5-turbo",
-     messages=messages
-            )
-    print("GPT RESPONSE = ",gpt_response.choices[0].message.content,"\n")
-    save_messages(user_msg,gpt_response)
-    return gpt_response.choices[0].message.content
+    url = "https://api.openai.com/v1/chat/completions"
+
+    headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}"
+        }
+
+    data = {
+            "model": "gpt-3.5-turbo",
+            "messages": messages,
+            "temperature": 0.5,
+        }
+
+
+    gpt_response=requests.post(url,headers=headers,json=data)
+
+    json_response=gpt_response.json()
+    
+    print("\nJSON RESPONSE = ",json_response["choices"][0]["message"]["content"],"\n")
+    save_messages(user_msg,json_response["choices"][0]["message"]["content"])
+
+
+    return json_response["choices"][0]["message"]["content"]
 
 
 #Generates speech audio from text using ElevenLabs Text-to-Speech API.
 def text_to_speech(chat_response):
 
-    voice_id="1qZOLVpd1TVic43MSkFY"
+    voice_id="96oPcs6oI8iZWmOgaWMP"
     voice_ID="tCdJgnmiVUt2DAMc1P0b"
     voice_idIndia="RkW4SvYcPQPWTpc0u2mu"
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_idIndia}/stream"
@@ -139,7 +191,6 @@ def text_to_speech(chat_response):
 #Loads conversation history from database.json file.
 def load_messages():
     messages=[]
-    print("Yohooo")
     file="database.json"
     empty=os.stat(file).st_size==0
 
@@ -152,7 +203,7 @@ def load_messages():
 
     else:
         messages.append(
-            {"role":"system","content":"You are an friendly and funny assistent who is a subject expert on India.Provide short answers that are relevant to Indians. Your name is Gyaani.Gyaani was made by Ro-hit Kau-ja-la-gi.You were created using whisper 1 model of open ai that transcribes voice to text then the text was passed to open ai gpt-3.5-turbo  API model to get a chat response from Chat GPT and then the response text was sent to elevenlabs API to convert text to speech.Keep response under 40 words and be funny most of the times.Do not hallucinate"}
+            {"role":"system","content":"You are an friendly and funny assistent who is a subject expert on India.Provide short answers that are relevant to Indians.Your name is Gyaani.Keep response under 30 words and be funny most of the times.Do not hallucinate"}
         )
 
     return messages
@@ -166,7 +217,7 @@ def save_messages(user_msg,gpt_response):
     print("Yupp")
 
     messages.append({"role":"user","content":user_msg})
-    messages.append({"role":"system","content":gpt_response.choices[0].message.content})
+    messages.append({"role":"system","content":gpt_response})
 
     with open(file,'w')  as f:
         json.dump(messages,f)

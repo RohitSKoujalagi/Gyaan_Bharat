@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import openai
 import os
 import requests
-from elevenlabs import generate,stream
+# from elevenlabs import generate,stream
 
 # openai.organization=os.getenv("OPENAI_ORG")
 app = FastAPI()

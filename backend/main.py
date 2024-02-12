@@ -172,10 +172,11 @@ def chat_completion(user_msg):
 #Generates speech audio from text using ElevenLabs Text-to-Speech API.
 def text_to_speech(chat_response):
   
-    voice_id="96oPcs6oI8iZWmOgaWMP"
-    voice_ID="tCdJgnmiVUt2DAMc1P0b"
+    # voice_id="96oPcs6oI8iZWmOgaWMP"
+    # voice_ID="tCdJgnmiVUt2DAMc1P0b"
     voice_idIndia="RkW4SvYcPQPWTpc0u2mu"
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_idIndia}/stream"
+
     payload = {
     "model_id": "eleven_monolingual_v1",
     "text": f"{chat_response}",
@@ -189,9 +190,10 @@ def text_to_speech(chat_response):
     "output_format":"mp3_44100_128"
             }
 
-    headers = {"xi-api-key":elevenlabs_key,"Content-Type": "application/json",
+    headers = {"xi-api-key":f"{elevenlabs_key}","Content-Type": "application/json",
                "accept":"audio/mpeg"
                }
+    print(elevenlabs_key)
 
     try:
       response = requests.request("POST",url, json=payload, headers=headers,stream=True)

@@ -58,15 +58,21 @@ async def root(file: UploadFile=File(...)):
     try:
             chat_response=chat_completion(user_msg)
             print("CHAT_RESPONSE\n",chat_response)
+    except Exception as e:
+            print("Chat Res ERRor \n",e)
 
-    
+
+    try:
             audio_output=text_to_speech(chat_response)
             
             with open('LOL.mp3', mode='wb') as f:
               f.write(audio_output)
+
             OutFyl="LOL.mp3"
 
-            return FileResponse(OutFyl)
+            Out_File = open(OutFyl, "rb")
+
+            return FileResponse(Out_File)
 
     except Exception as e:
             print(e)
@@ -83,6 +89,10 @@ async def root(file: UploadFile=File(...)):
 #         print(f"Could Not Transcribe Audio to Text \n Error: {e}")
 
 
+# def createTranscribedAudioFile():
+#     url=f"https://cloud.appwrite.io/v1//storage/buckets/{bucketId}/files"
+            
+
 def req_transcribe(file):
     try:
 
@@ -98,6 +108,7 @@ def req_transcribe(file):
         headers = {
              'Authorization': f"Bearer {open_api_key}"
                     }
+        
 
         response = requests.request("POST", url, headers=headers, data=payload,files=files)
 
@@ -106,7 +117,7 @@ def req_transcribe(file):
 
 
     except Exception as e:
-        print("Error \n",e)
+        print("Error from req_transcribe \n",e)
 
 
 #Queries the GPT-3.5-turbo model for a response to the user's message.
@@ -125,7 +136,10 @@ def req_transcribe(file):
 
 
 def chat_completion(user_msg):
+
+ try:
     messages=load_messages()
+    print("MESSAGES=\n",messages)
     messages.append({"role":"user","content":user_msg})
 
     url = "https://api.openai.com/v1/chat/completions"
@@ -151,11 +165,13 @@ def chat_completion(user_msg):
 
 
     return json_response["choices"][0]["message"]["content"]
+ except Exception as e:
+     print("Error from chat_completion=\n",e)
 
 
 #Generates speech audio from text using ElevenLabs Text-to-Speech API.
 def text_to_speech(chat_response):
-
+  
     voice_id="96oPcs6oI8iZWmOgaWMP"
     voice_ID="tCdJgnmiVUt2DAMc1P0b"
     voice_idIndia="RkW4SvYcPQPWTpc0u2mu"
@@ -183,9 +199,10 @@ def text_to_speech(chat_response):
       if response.status_code==200:
          return response.content
       else:
-         print(f"Error Response Code : {response.status_code}")
+         print(f"Error Response Code iz : {response.status_code}")
+
     except Exception as e:
-        print(e)
+        print("Error from text_to_speech\n",e)
         
 
 #Loads conversation history from database.json file.

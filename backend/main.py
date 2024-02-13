@@ -24,6 +24,7 @@ origins=[
     "http://localhost:3000/",
     "http://localhost:3000",
     "https://rohitskoujalagi.github.io/Gyaani/"
+    "https://rohitskoujalagi.github.io/Gyaani"
 ]
 
 

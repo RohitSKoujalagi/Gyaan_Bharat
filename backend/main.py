@@ -226,7 +226,7 @@ def txtToSpeech(chat_response):
         "input": chat_response,
         "voice": "fable",
         "response_format": "mp3",
-        "speed": 0.5
+        "speed": 0.9
             }
 
 

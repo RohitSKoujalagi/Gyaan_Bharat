@@ -22,7 +22,8 @@ origins=[
     "https://gyaani-2-0.onrender.com/",
     "https://gyaani-2-0.onrender.com/reset/",
     "http://localhost:3000/",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://rohitskoujalagi.github.io/Gyaani/"
 ]
 
 

@@ -18,7 +18,11 @@ elevenlabs_key=os.getenv("ELEVENLABS_KEY")
 
 origins=[
     "http://localhost:8000/",
-    "http://localhost:8000/reset"
+    "http://localhost:8000/reset",
+    "https://gyaani-2-0.onrender.com/",
+    "https://gyaani-2-0.onrender.com/reset/",
+    "http://localhost:3000/",
+    "http://localhost:3000"
 ]
 
 
@@ -44,6 +48,7 @@ async def reset_msgs():
 async def root(file: UploadFile=File(...)):
 
     try:
+
         
         with open(file.filename, "wb") as buffer:
          buffer.write(file.file.read())
@@ -63,16 +68,13 @@ async def root(file: UploadFile=File(...)):
 
 
     try:
-            audio_output=text_to_speech(chat_response)
+            audio_output=txtToSpeech(chat_response)
             
             with open('LOL.mp3', mode='wb') as f:
               f.write(audio_output)
 
-            OutFyl="LOL.mp3"
-
-            Out_File = open(OutFyl, "rb")
-
-            return FileResponse(Out_File)
+            OutFyl="output.mp3"
+            return FileResponse(OutFyl)
 
     except Exception as e:
             print(e)
@@ -193,10 +195,11 @@ def text_to_speech(chat_response):
     headers = {"xi-api-key":f"{elevenlabs_key}","Content-Type": "application/json",
                "accept":"audio/mpeg"
                }
-    print(elevenlabs_key)
+    # print(elevenlabs_key)
 
     try:
       response = requests.request("POST",url, json=payload, headers=headers,stream=True)
+      print(response.json())
       
       if response.status_code==200:
          return response.content
@@ -205,6 +208,49 @@ def text_to_speech(chat_response):
 
     except Exception as e:
         print("Error from text_to_speech\n",e)
+
+
+def txtToSpeech(chat_response):
+    try:
+        url = "https://api.openai.com/v1/audio/speech"
+
+# Define the request payload
+        payload = {
+        "model": "tts-1-hd",
+        "input": chat_response,
+        "voice": "fable",
+        "response_format": "mp3",
+        "speed": 0.5
+            }
+
+
+# Set the request headers
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {open_api_key}"
+                }
+
+# Make the POST request
+        response = requests.post(url, json=payload, headers=headers)
+
+# Check if the request was successful
+        if response.status_code == 200:
+    # Save the audio file
+            print("\nRESPECT\n")
+            # with open("output.mp3", "wb") as f:
+            #   f.write(response.content)
+            # print("Audio file generated successfully.")
+            return response.content
+
+            
+
+        else:
+         print("Error:", response.text)
+
+
+
+    except Exception as e:
+        print("\nError in txttospeech is\n",e)
         
 
 #Loads conversation history from database.json file.

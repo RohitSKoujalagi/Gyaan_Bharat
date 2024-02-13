@@ -6,10 +6,13 @@ import axios from "axios";
   function Top(props) {
 
     const [isResetting,setIsResetting]=useState(false)
+    let url="https://gyaani-2-0.onrender.com/reset/"
+    // let url="http://localhost:8000/reset/"
+
 
     const resetConversation=async ()=>{
       setIsResetting(true);
-      await axios.get("http://localhost:8000/reset").then((res)=>{
+      await axios.get(url).then((res)=>{
         if(res.status===200){
           props.setMessages([])
         }

@@ -29,24 +29,32 @@ function Main() {
       const formData=new FormData();
       formData.append("file",blob,"audio_file.wav");
 
-      const fyl=await axios.post("http://localhost:8000/",formData,{
+      let url="https://gyaani-2-0.onrender.com/"
+      
+      // let url="http://localhost:8000"
+
+      const fyl=await axios.post(url,formData,
+      {
         headers:{"Content-Type":"audio/mpeg"},responseType:"arraybuffer",
-      }).then((res)=>{
+      })
+      .then((res)=>{
         const blob=res.data;
+        console.log(res);
         const audio=new Audio();
         audio.src=createBlobUrl(blob);
-
 
         setIsLoading(false);
         audio.play();
 
 
-      }).catch((err)=>{
+      })
+      .catch((err)=>{
         console.error(err.message);
         setIsLoading(false);
       })
 
-    }).catch((err)=>{console.err(err)}))
+    })
+    .catch((err)=>{console.err(err)}))
     .catch((err)=>{console.err(err)})
 
   };

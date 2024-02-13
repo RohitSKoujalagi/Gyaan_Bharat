@@ -21,6 +21,8 @@ origins=[
     "http://localhost:8000/reset",
     "https://gyaani-2-0.onrender.com/",
     "https://gyaani-2-0.onrender.com/reset/",
+    "https://gyaani.onrender.com/",
+    "https://gyaani.onrender.com/reset/"
     "http://localhost:3000/",
     "http://localhost:3000",
     "https://rohitskoujalagi.github.io/Gyaani/"
@@ -77,7 +79,7 @@ async def root(file: UploadFile=File(...)):
             with open('LOL.mp3', mode='wb') as f:
               f.write(audio_output)
 
-            OutFyl="output.mp3"
+            OutFyl="LOL.mp3"
             return FileResponse(OutFyl)
 
     except Exception as e:
